@@ -21,10 +21,11 @@ do
       echo "${jmapOutput}"
       if [[ "$jmapOutput" =~ "Dumping heap to" ]]; then
         dumpFile=`expr "$jmapOutput" : "Dumping heap to \(.*\) \.\.\."`
-        filename="heap-${DYNO}-$(date +"%s").hprof"
+        filename="${S3_HEAP_FILE_PREFIX}heap-${DYNO}-$(date +"%s").hprof"
         if [ ${AWS_ACCESS_KEY_ID:-""} != "" ]; then
           if [ ${AWS_SECRET_ACCESS_KEY:-""} != "" ]; then
             if [ ${S3_BUCKET_NAME:-""} != "" ]; then
+
               echo "Uploading heap dump to S3 as '${filename}' ..."
 
               resource="/${S3_BUCKET_NAME}/${filename}"
